@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSMTilesDowloader</title>
+    <link rel="stylesheet" href="assets/app.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js" integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.1.0/jszip-utils.min.js" integrity="sha512-3WaCYjK/lQuL0dVIRt1thLXr84Z/4Yppka6u40yEJT1QulYm9pCxguF6r8V84ndP5K03koI9hV1+zo/bUbgMtA==" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <header>
+        <h1><span>OSMTiles</span><br>Downloader</h1>
+        <a href="about/index.html">À propos</a>
+    </header>
+
+    <main>    
+        <h2 class="main-heading">Pré-requis :</h2>
+        <hr>
+
+        <p>
+            Avant toute utilisation, deux étapes préliminaires sont nécessaires et au cours desquelles vous aurez à relever des informations essentielles au bon fonctionnement de cet outil.
+        </p>
+    
+        <ul>
+            <li>
+               Sur <a class="link" href="https://mapwarper.net/" target="_blank">Map Warper</a>, une fois sur la page de la carte dont vous souhaitez récupérer les tuiles, notez l'URL relatif au schéma OSM des tuiles se trouvant dans l'onglet <strong>Export</strong>.
+            </li>
+    
+            <li>
+                Rendez-vous sur le site de <a class="link" href="http://tools.geofabrik.de/calc/" target="_blank">Geofabrik tools</a>. Faites apparaître les coordonnées des tuiles en cochant la case relative à cet effet dans l'onglet "+", se trouvant en haut à droite de la carte, qui devrait afficher les coordonnées <strong>x</strong>, <strong>y</strong> et <strong>z</strong> de chaque tuile. Positionner ensuite le rectangle orange de sorte à ce que son aire recouvre l'étendue géographique que couvre la carte que vous avez choisie sur Map Warper. <br>
+    
+                Remarquez que le niveau zoom, indiqué par une variable <strong>z</strong> augmente ou diminue d'un niveau à chaque click sur le bouton de contrôle se situant en haut à gauche de la carte. Notez l'entendue du zoom, c'est-à-dire entre quel niveau de zoom minimum et maximum vous souhaitez récupérer les tuiles, par exemple entre <strong>z<sub>min</sub> = 10</strong> et <strong>z<sub>max</sub> = 18</strong>. 
+                <br>
+                Enfin, notez également pour ces deux dernières variables, les coordonnées <strong><i>X</i><sub>min</sub></strong> et <strong><i>Y</i><sub>min</sub></strong>, relatives au coin supérieur gauche de l'aire du rectangle, ainsi que les coordonnées <strong><i>X</i><sub>max</sub></strong> et <strong><i>Y</i><sub>max</sub></strong>, relatives cette fois au coin inférieure droit de celui-ci.
+            </li>
+        </ul>
+
+        <section>
+            <h2 class="main-heading">Informations à fournir :</h1>
+    
+            <hr>
+
+            <div class="callout">
+                <div>📍</div>
+                <div>Une fois le formulaire validé et les images chargées, cliquez manuellement sur les tuiles que vous souhaitez télécharger, ou cliquez directement sur le bouton "Sélectionner toutes les tuiles" pour sélectionner toutes les tuiles chargées.</div>
+            </div>
+
+            <button class="dafaultValueBtn">Remplir avec les valeurs par défaut</button>
+        
+            <form id="form" action="" method="get">
+                <div class="form-field">
+                    <label>L'URL relatif au schéma OSM des tuiles contenant les variables <b>{z}</b>, <b>{x}</b> et <b>{y}</b> :</label>
+                    <input type="text" name="url" id="url" placeholder="https://mapwarper.net/maps/tile/26642/{z}/{x}/{y}.png">
+                </div>
+                <div class="form-field data">
+                    <div>
+                        <label>Le niveau de <i><b>zoom</b></i><sub>min</sub> :</label>
+                        <input type="number" name="min_zoom" id="min_zoom" placeholder="10">
+                    </div>
+
+                    <div>
+                        <label>Le niveau de <i><b>zoom</b></i><sub>max</sub> :</label>
+                        <input type="number" name="max_zoom" id="max_zoom" placeholder="18">
+                    </div>
+                </div>
+                <div class="form-field data">
+                    <div>
+                        <label>La coordonnée <i><b>X</b></i><sub>min</sub> de <i><b>zoom</b></i><sub>max</sub> :</label>
+                        <input type="number" name="x_min_max_zoom" id="x_min_max_zoom" placeholder="132761">
+                    </div>
+
+                    <div>
+                        <label>La coordonnée <i><b>Y</b></i><sub>min</sub> de <i><b>zoom</b></i><sub>max</sub> :</label>
+                        <input type="number" name="y_min_max_zoom" id="y_min_max_zoom" placeholder="90166">
+                    </div>
+
+                    <div>
+                        <label> La coordonnée <i><b>X</b></i><sub>max</sub> de <i><b>zoom</b></i><sub>max</sub> :</label>
+                        <input type="number" name="x_max_max_zoom" id="x_max_max_zoom" placeholder="132787">
+                    </div>
+
+                    <div>
+                        <label>La coordonnée <i><b>Y</b></i><sub>max</sub> de <i><b>zoom</b></i><sub>max</sub> :</label>
+                        <input type="number" name="y_max_max_zoom" id="y_max_max_zoom" placeholder="90196">
+                    </div>
+                </div>
+
+                <p id="err" class="error"></p>
+
+                <div>
+                    <input class="form-submit" type="submit" value="Valider">
+                </div>
+            </form>
+
+            
+            
+            <div class="download-section">
+                <div>
+                    <input class="selectAllTiles" type="checkbox" name="tiles">
+                    <label>Sélectionner toutes les tuiles</label>
+                </div>
+
+                <div>
+                    <input class="download" type="submit" value="Télécharger" onclick="generateZIP()">
+                </div>
+            </div>
+        
+            <div class="tilesResult" id="tilesResult"></div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="page-footer">
+                <h3>OSMTilesDowloader</h3>
+    
+            <div>
+                <span>par Ulysse Gravier</span>
+                <ul>
+                    <li><a class="link-footer" href="https://mapwarper.net/" target="_blank">✷ Portfolio</a></li>
+                    <li><a class="link-footer" href="https://mapwarper.net/" target="_blank">✷ Github</a></li>
+                </ul>
+            </div>
+    
+            <div>
+                <span>sur fond de</span>
+                <ul>
+                    <li><a class="link-footer" href="https://mapwarper.net/" target="_blank">✷ Map Warper</a></li>
+                    <li><a class="link-footer" href="http://tools.geofabrik.de/calc/" target="_blank">✷ Geofabrik tools</a></li>
+                </ul>
+            </div>
+        </div>
+
+
+    
+        <span class="mentions"><a href="">Mentions légales</a> — CC BY-NC-SA (sauf mention contraire) · 2021</span>
+    </footer>
+
+    <!-- <script src="assets/jszip_utils.js"></script> -->
+    <script src="assets/jszip.min.js"></script>
+    <script src="assets/app.js"></script>
+    <script src="assets/zip.min.js"></script>
+</body>
+
+</html>
