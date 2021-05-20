@@ -4,6 +4,27 @@
     box-sizing: border-box;
 }
 
+@keyframes rotate {
+    100% {
+        transform: rotate(360deg);;
+    }
+}
+
+@keyframes dash {
+    0% {
+        stroke-dasharray: 1, 150;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -35;
+    }
+    100% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -124;
+    }
+}
+
 body {
     padding: 0;
     margin: 0;
@@ -11,6 +32,56 @@ body {
     height: auto;
     font-family: 'Inter', sans-serif;
     background: #eff2f7;
+}
+
+.loading-screen {
+    width: 100vw;
+    height: 100vh;
+    opacity: 0;
+    position: fixed;
+    background: rgba(0, 0, 0, .4);
+    z-index: 1000;
+    display: flex;
+    transition: opacity 700ms cubic-bezier(.694, .048, .335, 1);
+}
+
+.alert {
+    padding: 15px 18px;
+    border-radius: 10px;
+    background: #D2FBD0;
+    position: absolute;
+    bottom: -60px;
+    box-shadow: 0px 6px 8px rgba(0,0,0,0.15);
+    transition: bottom 400ms cubic-bezier(.694, .048, .335, 1);
+}
+
+.alert h3 {
+    font-size: 0.9375em;
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    color: #2A7626;
+    margin: 0;
+}
+
+svg {
+    width: 8vh;
+    height: 8vh;
+    animation: rotate 2s linear infinite;
+} 
+
+.rotate {
+    fill: none;
+    stroke: #282828;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    animation: dash 1.75s ease-in-out infinite;
+}
+
+.static {
+    fill: none;
+    stroke: #dadada;
+    stroke-width: 2px;
+    stroke-linecap: round;
 }
 
 section {
@@ -231,17 +302,28 @@ input[type=text]:focus {
 }
 
 .download-section {
-    margin: 2rem 0;
+    width: 30%;
+    height: auto;
+    padding: 25px 30px;
+    border-radius: 6px;
+    background: #f0f0f0;
+    position: sticky;
+    bottom: -130px;
+    left: 15px;
+    margin: 2rem auto;
+    box-shadow: 0px 6px 8px rgba(0,0,0,0.15);
+    transition: bottom 700ms cubic-bezier(.694, .048, .335, 1);
 }
 
 .download {
     display: block;
-    color: white;
-    margin: 10px 0 ;
+    width: 100%;
+    color: #fff;
+    margin: 10px 0 0 0;
     font-size: 1em;
     font-weight: 300;
     padding: 15px 20px;
-    background-color: #0001D0;
+    background-color: #1954FF;
     border-radius: 5px;
     cursor: pointer;
     transition: ease-in-out 200ms;
@@ -345,6 +427,30 @@ footer {
 
 .selected {
     border: 2px solid #c32032;
+}
+
+/* .tilesResult .tile:last-child {
+    border: 1px solid lime;
+} */
+
+.hidden {
+    display: none;
+}
+
+.reveal {
+    opacity: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.download-reveal {
+    display: block;
+    bottom: 30px;
+}
+
+.alert-reveal {
+    bottom: 30px;
 }
 
 @media only screen and (max-width: 736px) {

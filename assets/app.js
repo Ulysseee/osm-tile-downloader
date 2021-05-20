@@ -3,7 +3,14 @@ let averageTileSize = 63, // Taille moyenne en Ko d'une tuile
 
 let links = [];
 let testArray = [];
+let nbFiles = 10000;
+let imagesLoaded = 0;
+let totalImages = 0;
+let imageLoaded = false;
 
+let loadingScreen = document.querySelector('.loading-screen');
+let alertDiv = document.querySelector('.alert');
+let downloadSection = document.querySelector('.download-section');
 let dafaultValueBtn = document.querySelector(".dafaultValueBtn");
 dafaultValueBtn.addEventListener('click', event => {
     defaultValue();
@@ -96,20 +103,65 @@ document.getElementById("form").addEventListener("submit", function (e) {
                             let yStep = zoomStep.replace('{x}', `${j - 1}`);
                         }
                         addElement(yStep);
+                        totalImages++;
                     }
+
+                    
+                    // let resultDiv = document.getElementById('tilesResult');
+                    // let lastImg = resultDiv.lastChild;
+                    // console.log(lastImg);
                 }
             });
 
-
+            loadingScreen.classList.remove("hidden");
+            loadingScreen.classList.add("reveal");
+            setTimeout(() => {
+                alertDiv.classList.add("alert-reveal");
+            }, 500)
+            
             let selectAllTiles = document.querySelector(".selectAllTiles");
             let allTiles = document.querySelectorAll('.tile');
+            
+            allTiles.forEach(element => {
+                // console.log(element.firstChild);
+                element.firstChild.onload = function() {
+
+                    if (element.firstChild.complete) {
+                        imagesLoaded++;
+                      } else {
+                        element.firstChild.addEventListener('load', () => {
+                            imagesLoaded++
+                        })
+                        element.firstChild.addEventListener('error', function() {
+                            alert('error')
+                        })
+                      }
+                    //   console.log(imagesLoaded);
+
+                    if (imagesLoaded == totalImages - 3) {
+                      allImagesLoaded()
+                    }
+                };
+            })              
+            
+            function allImagesLoaded() {
+                imageLoaded = true;
+                alertDiv.classList.remove("alert-reveal");
+                setTimeout(() => {
+                    loadingScreen.classList.add("hidden");
+                }, 500)
+                setTimeout(() => {
+                    downloadSection.classList.remove("hidden");
+                    downloadSection.classList.add("download-reveal");
+                }, 1200)
+                console.log("ALL IMAGES LOADED")
+            }
+
             selectAllTiles.addEventListener('change', event => {
                 if(allTiles.length != 0) {
                     links = [];
                     allTiles.forEach(element => {
-                            element.classList.remove('selected');
-                    });
-                    allTiles.forEach(element => {
+                        element.classList.remove('selected');
                         if(!element.classList.contains("selected")) {
                             element.classList.add('selected')
                             links.push(element.firstChild.getAttribute('src'));
@@ -177,34 +229,35 @@ function defaultValue() {
     // url.value = "https://mapwarper.net/maps/tile/26642/{z}/{x}/{y}.png";
     min_zoom.value = 10;
     max_zoom.value = 18;
-    // x_min_max_zoom.value = 132761;
-    // y_min_max_zoom.value = 90166;
-    // x_max_max_zoom.value = 132787;
-    // y_max_max_zoom.value = 90196;
-    x_min_max_zoom.value = 132785;
-    y_min_max_zoom.value = 90194;
+    x_min_max_zoom.value = 132761;
+    y_min_max_zoom.value = 90166;
     x_max_max_zoom.value = 132787;
     y_max_max_zoom.value = 90196;
+    // x_min_max_zoom.value = 132785;
+    // y_min_max_zoom.value = 90194;
+    // x_max_max_zoom.value = 132787;
+    // y_max_max_zoom.value = 90196;
 }
 
-function generateZIP() {    
+function generateZIP() { 
+    console.log(links.length)  
     if(links.length == 0) {
         console.log('La taille du tableau est : ' + links.length);
         console.log('Aucuns fichiers à télécharger!');
-    } else if (links.length > 20) { // Valeur de test, à modifier lors du déploiement 
+    } else if (links.length > nbFiles) { // Valeur de test, à modifier lors du déploiement 
         console.log('La taille du tableau est : ' + links.length);
         console.log('Fichier(s) trop lourd(s)');
 
         let newArray =[];
-        for (k=0; k<links.length; k+=8) { // Valeur de test, à modifier lors du déploiement 
-            newArray.push(links.slice(k,k+8)); // Valeur de test, à modifier lors du déploiement 
+        for (k=0; k<links.length; k+=15000) { // Valeur de test, à modifier lors du déploiement 
+            newArray.push(links.slice(k,k+15000)); // Valeur de test, à modifier lors du déploiement 
         }  
         console.log(newArray);
 
-        newArray.map(file => {
-            setZIP(file);
-        });
-    } else if (links.length < 500) { // Valeur de test, à potentiellement modifier lors du déploiement 
+        // newArray.map(file => {
+        //     setZIP(file);
+        // });
+    } else if (links.length < nbFiles) { // Valeur de test, à potentiellement modifier lors du déploiement 
         console.log('La taille du tableau est : ' + links.length);
         setZIP(links);
     }
@@ -213,10 +266,10 @@ function generateZIP() {
 function setZIP(array) {
     let zip = new JSZip();
     let count = 0;
-    let zipFilename = "Pictures.zip";
+    let zipFilename = "tile-group.zip";
     
     array.forEach(function (url, i) {
-        console.log(i);
+        // console.log(i);
         let filename = array[i];
         // filename = filename.replace(/[\/\*\|\:\<\>\?\"\\]/gi, '').replace("httpsi.imgur.com","");
         filename = filename.replace(/[\/\*\|\:\<\>\?\"\&\\]/gi, '').replace("httpigm.univ-mlv.fr~gambettegallicartegetTile.php","") + ".jpg";

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OSMTilesDowloader</title>
+    <title>OSMTileDowloader</title>
     <link rel="stylesheet" href="assets/app.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js" integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ==" crossorigin="anonymous"></script>
@@ -13,6 +13,16 @@
 </head>
 
 <body>
+    <div class="loading-screen hidden">
+        <div class="alert">
+            <h3>Les tuiles sont en cours de chargement 🎉</h3>
+        </div>
+        <svg viewBox="0 0 50 50">
+            <circle class="static" cx="25" cy="25" r="20"></circle>
+            <circle class="rotate" cx="25" cy="25" r="20"></circle>
+        </svg>
+    </div>
+
     <header>
         <h1><span>OSMTiles</span><br>Downloader</h1>
         <a href="about/index.html">À propos</a>
@@ -99,24 +109,24 @@
 
             
             
-            <div class="download-section">
-                <div>
-                    <input class="selectAllTiles" type="checkbox" name="tiles">
-                    <label>Sélectionner toutes les tuiles</label>
-                </div>
-
-                <div>
-                    <input class="download" type="submit" value="Télécharger" onclick="generateZIP()">
-                </div>
-            </div>
-        
+            
             <div class="tilesResult" id="tilesResult"></div>
         </section>
+        <div class="download-section hidden">
+            <div>
+                <input class="selectAllTiles" type="checkbox" name="tiles">
+                <label>Sélectionner toutes les tuiles</label>
+            </div>
+
+            <div>
+                <input class="download" type="submit" value="Télécharger" onclick="generateZIP()">
+            </div>
+        </div>
     </main>
     
     <footer>
         <div class="page-footer">
-                <h3>OSMTilesDowloader</h3>
+                <h3>OSMTileDowloader</h3>
     
             <div>
                 <span>par Ulysse Gravier</span>
