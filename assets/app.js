@@ -225,7 +225,9 @@ function addElement (urlTile) {
   }
 
 function defaultValue() {
-    url.value = "http://igm.univ-mlv.fr/~gambette/gallicarte/getTile.php?z={z}&x={x}&y={y}";
+    url.value = "http://igm.univ-mlv.fr/~gambette/gallicarte/getTile.php?z={z}&x={x}&y={y}&source=stamen&id=terrain";
+    url.value = "http://igm.univ-mlv.fr/~gambette/gallicarte/getTile.php?z={z}&x={x}&y={y}&source=mapwarper&id=26642";
+    // url.value = "http://igm.univ-mlv.fr/~gambette/gallicarte/getTile.php?z={z}&x={x}&y={y}";
     // url.value = "https://mapwarper.net/maps/tile/26642/{z}/{x}/{y}.png";
     min_zoom.value = 10;
     max_zoom.value = 18;
