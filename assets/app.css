@@ -103,8 +103,8 @@ label {
 input[type="number"],
 input[type="text"],
 input[type="submit"] {
-    user-select: none;
     border: none;
+    user-select: none;
     font-size: 1rem;
     height: 3rem;
     padding: 0 15px;
@@ -231,7 +231,6 @@ header h1 {
 header h1 span {
     font-size: 0.375em;
     font-weight: 400;
-    text-transform: uppercase;
 }
 
 .callout {
@@ -272,6 +271,7 @@ form>div {
 
 
 .form-field input {
+    border: none;
     width: 100%;
     margin: 10px 0;
     color: #464646;
@@ -302,11 +302,12 @@ input[type=text]:focus {
 }
 
 .download-section {
-    width: 30%;
+    width: 26%;
+    min-width: 278px;
     height: auto;
-    padding: 25px 30px;
-    border-radius: 6px;
-    background: #f0f0f0;
+    padding: 18px 20px;
+    border-radius: 8px;
+    background: #ebebeb;
     position: sticky;
     bottom: -130px;
     left: 15px;
@@ -315,18 +316,61 @@ input[type=text]:focus {
     transition: bottom 700ms cubic-bezier(.694, .048, .335, 1);
 }
 
+.download-section div:first-child {
+    margin-bottom: 16px;
+}
+
+.selectAllTiles {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    margin: 0 2px 0 0;
+    cursor: pointer;
+    border: 2px solid #bbbdc7;
+    border-radius: 50%;
+    background-color: #fff;
+    transform: translateY(4px);
+}
+
+.selectAllTiles:checked {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='405.272' height='405.272'%3e%3cpath d='M393.401 124.425L179.603 338.208c-15.832 15.835-41.514 15.835-57.361 0L11.878 227.836c-15.838-15.835-15.838-41.52 0-57.358 15.841-15.841 41.521-15.841 57.355-.006l81.698 81.699L336.037 67.064c15.841-15.841 41.523-15.829 57.358 0 15.835 15.838 15.835 41.514.006 57.361z' fill='%23fff'/%3e%3c/svg%3e");
+    background-size: 10px;
+    background-color: #4acea3;
+    border-color: #38bb90;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.download-btn {
+    position: relative
+}
+
 .download {
     display: block;
     width: 100%;
-    color: #fff;
+    color: #ebebeb;
     margin: 10px 0 0 0;
+    letter-spacing: .5px;
     font-size: 1em;
-    font-weight: 300;
+    font-weight: 500;
     padding: 15px 20px;
     background-color: #1954FF;
     border-radius: 5px;
     cursor: pointer;
     transition: ease-in-out 200ms;
+}
+
+.progress-bar {
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    height: 6px;
+    background: #0001D0;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .form-submit:hover {
@@ -342,9 +386,9 @@ input[type=text]:focus {
 }
 
 .tilesResult div {
-    width: 15%;
+    width: 10%;
     height: auto;
-    margin: 8px 8px;
+    margin: 4px;
 }
 
 .tilesResult div img {

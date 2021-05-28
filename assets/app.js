@@ -12,9 +12,16 @@ let loadingScreen = document.querySelector('.loading-screen');
 let alertDiv = document.querySelector('.alert');
 let downloadSection = document.querySelector('.download-section');
 let dafaultValueBtn = document.querySelector(".dafaultValueBtn");
+let selectAllTiles = document.querySelector(".selectAllTiles");
 dafaultValueBtn.addEventListener('click', event => {
     defaultValue();
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    if(selectAllTiles.checked) {
+        selectAllTiles.checked = false; 
+    }
+})
 
 document.getElementById("form").addEventListener("submit", function (e) {
     let err;
@@ -119,7 +126,6 @@ document.getElementById("form").addEventListener("submit", function (e) {
                 alertDiv.classList.add("alert-reveal");
             }, 500)
             
-            let selectAllTiles = document.querySelector(".selectAllTiles");
             let allTiles = document.querySelectorAll('.tile');
             
             allTiles.forEach(element => {
@@ -198,7 +204,7 @@ document.getElementById("form").addEventListener("submit", function (e) {
             
         // Traite et affiche l'erreur si le poids est supérieur à la limite fixée par la variable maximumAllTilesSize
         } else {
-            err = "Stoackage trop important. Veuillez revoir les dimenssions de la carte à la baisse."
+            err = "Stoackage trop important. Veuillez revoir les dimensions de la carte à la baisse."
             document.getElementById("err").classList.add('active');
             document.getElementById("err").innerHTML = err;
         }
@@ -225,9 +231,9 @@ function addElement (urlTile) {
   }
 
 function defaultValue() {
-    url.value = "http://igm.univ-mlv.fr/~gambette/gallicarte/getTile.php?z={z}&x={x}&y={y}&source=stamen&id=terrain";
-    url.value = "http://igm.univ-mlv.fr/~gambette/gallicarte/getTile.php?z={z}&x={x}&y={y}&source=mapwarper&id=26642";
-    // url.value = "http://igm.univ-mlv.fr/~gambette/gallicarte/getTile.php?z={z}&x={x}&y={y}";
+    // url.value = "http://igm.univ-mlv.fr/~gambette/gallicarte/getTile.php?z={z}&x={x}&y={y}&source=stamen&id=terrain";
+    // url.value = "http://igm.univ-mlv.fr/~gambette/gallicarte/getTile.php?z={z}&x={x}&y={y}&source=mapwarper&id=26642";
+    url.value = "http://igm.univ-mlv.fr/~gambette/gallicarte/getTile.php?z={z}&x={x}&y={y}";
     // url.value = "https://mapwarper.net/maps/tile/26642/{z}/{x}/{y}.png";
     min_zoom.value = 10;
     max_zoom.value = 18;
@@ -271,6 +277,8 @@ function setZIP(array) {
     let zipFilename = "tile-group.zip";
     
     array.forEach(function (url, i) {
+        console.log(Math.round(((i/array.length)*100)*10)/10);
+        document.querySelector(".progress-bar").style.width = Math.round(((i/array.length)*100)*10)/10 + "%";
         // console.log(i);
         let filename = array[i];
         // filename = filename.replace(/[\/\*\|\:\<\>\?\"\\]/gi, '').replace("httpsi.imgur.com","");
@@ -289,4 +297,5 @@ function setZIP(array) {
             }
         });
     });
+    console.log("DONE")
 }

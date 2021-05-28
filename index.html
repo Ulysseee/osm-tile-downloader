@@ -24,7 +24,7 @@
     </div>
 
     <header>
-        <h1><span>OSMTiles</span><br>Downloader</h1>
+        <h1><span>OSMTile</span><br>Downloader</h1>
         <a href="about/index.html">À propos</a>
     </header>
 
@@ -114,19 +114,20 @@
         </section>
         <div class="download-section hidden">
             <div>
-                <input class="selectAllTiles" type="checkbox" name="tiles">
-                <label>Sélectionner toutes les tuiles</label>
+                <input class="selectAllTiles" type="checkbox" id="tiles" name="tiles">
+                <label for="tiles">Sélectionner toutes les tuiles</label>
             </div>
 
-            <div>
+            <div class="download-btn">
                 <input class="download" type="submit" value="Télécharger" onclick="generateZIP()">
+                <div class="progress-bar"></div>
             </div>
         </div>
     </main>
     
     <footer>
         <div class="page-footer">
-                <h3>OSMTileDowloader</h3>
+                <h3>OSMTileDownloader</h3>
     
             <div>
                 <span>par Ulysse Gravier</span>
