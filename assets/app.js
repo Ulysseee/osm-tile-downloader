@@ -1,18 +1,18 @@
 let averageTileSize = 63, // Taille moyenne en Ko d'une tuile
     maximumAllTilesSize = 500000; // Poids maximum en Ko que peut atteindre le stockage de l'ensemble tuiles
 
-let links = [];
-let testArray = [];
-let nbFiles = 10000;
-let imagesLoaded = 0;
-let totalImages = 0;
-let imageLoaded = false;
+let links = [],
+    nbFiles = 10000,
+    imagesLoaded = 0,
+    totalImages = 0,
+    imageLoaded = false;
 
-let loadingScreen = document.querySelector('.loading-screen');
-let alertDiv = document.querySelector('.alert');
-let downloadSection = document.querySelector('.download-section');
-let dafaultValueBtn = document.querySelector(".dafaultValueBtn");
-let selectAllTiles = document.querySelector(".selectAllTiles");
+let loadingScreen = document.querySelector('.loading-screen'),
+    alertDiv = document.querySelector('.alert'),
+    downloadSection = document.querySelector('.download-section'),
+    dafaultValueBtn = document.querySelector(".dafaultValueBtn"),
+    selectAllTiles = document.querySelector(".selectAllTiles");
+
 dafaultValueBtn.addEventListener('click', event => {
     defaultValue();
 });
@@ -127,10 +127,13 @@ document.getElementById("form").addEventListener("submit", function (e) {
             }, 500)
             
             let allTiles = document.querySelectorAll('.tile');
-            
+            let c = 1;
+
             allTiles.forEach(element => {
                 // console.log(element.firstChild);
                 element.firstChild.onload = function() {
+                    // console.log(Math.round(((c/allTiles.length)*100)*10)/10);
+                    document.querySelector(".tiles-dl").style.width = Math.round(((c/allTiles.length)*100)*10)/10 + "%";
 
                     if (element.firstChild.complete) {
                         imagesLoaded++;
@@ -142,11 +145,12 @@ document.getElementById("form").addEventListener("submit", function (e) {
                             alert('error')
                         })
                       }
-                    //   console.log(imagesLoaded);
 
                     if (imagesLoaded == totalImages - 3) {
                       allImagesLoaded()
                     }
+
+                    c++;
                 };
             })              
             
@@ -165,20 +169,27 @@ document.getElementById("form").addEventListener("submit", function (e) {
 
             selectAllTiles.addEventListener('change', event => {
                 if(allTiles.length != 0) {
-                    links = [];
-                    allTiles.forEach(element => {
-                        element.classList.remove('selected');
-                        if(!element.classList.contains("selected")) {
-                            element.classList.add('selected')
-                            links.push(element.firstChild.getAttribute('src'));
-                        } else if(element.classList.contains("selected")) {
+                    if(!selectAllTiles.checked) {
+                        links = [];
+                        allTiles.forEach(element => {
                             element.classList.remove('selected');
-                            let itemtoRemove = element.firstChild.getAttribute('src');
-                            // links.splice($.inArray(itemtoRemove, links), 1);
-                            links.splice(links.indexOf(itemtoRemove), 1);
-                        }
-                    });
-                    console.log(links);
+                        });
+                    } else {
+                        links = [];
+                        allTiles.forEach(element => {
+                            element.classList.remove('selected');
+                            if(!element.classList.contains("selected")) {
+                                element.classList.add('selected')
+                                links.push(element.firstChild.getAttribute('src'));
+                            } else if(element.classList.contains("selected")) {
+                                element.classList.remove('selected');
+                                let itemtoRemove = element.firstChild.getAttribute('src');
+                                // links.splice($.inArray(itemtoRemove, links), 1);
+                                links.splice(links.indexOf(itemtoRemove), 1);
+                            }
+                        });
+                        console.log(links);
+                    }
                 } else {
                     console.log("no");
                 }
@@ -272,16 +283,13 @@ function generateZIP() {
 };
 
 function setZIP(array) {
+    document.querySelector('.download').value = "Téléchargement en cours";
     let zip = new JSZip();
     let count = 0;
     let zipFilename = "tile-group.zip";
     
     array.forEach(function (url, i) {
-        console.log(Math.round(((i/array.length)*100)*10)/10);
-        document.querySelector(".progress-bar").style.width = Math.round(((i/array.length)*100)*10)/10 + "%";
-        // console.log(i);
         let filename = array[i];
-        // filename = filename.replace(/[\/\*\|\:\<\>\?\"\\]/gi, '').replace("httpsi.imgur.com","");
         filename = filename.replace(/[\/\*\|\:\<\>\?\"\&\\]/gi, '').replace("httpigm.univ-mlv.fr~gambettegallicartegetTile.php","") + ".jpg";
         // loading a file and add it in a zip file
         JSZipUtils.getBinaryContent(url, function (err, data) {
@@ -290,10 +298,12 @@ function setZIP(array) {
             }
             zip.file(filename, data, { binary: true });
             count++;
+            document.querySelector(".zip-dl").style.width = Math.round(((i/array.length)*100)*10)/10 + "%";
             if (count == array.length) {
                 zip.generateAsync({ type: 'blob' }).then(function (content) {
                 saveAs(content, zipFilename);
                 });
+                document.querySelector('.download').value = "Télécharger";
             }
         });
     });
