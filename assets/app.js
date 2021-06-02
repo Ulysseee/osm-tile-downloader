@@ -35,6 +35,9 @@ document.getElementById("form").addEventListener("submit", function (e) {
         x_max_max_zoom = parseInt(document.getElementById("x_max_max_zoom").value),
         y_max_max_zoom = parseInt(document.getElementById("y_max_max_zoom").value);
     
+    url = url.replace('http', 'https')
+    console.log(url);
+
     // Vérifie si l'ensemble des champs ont été renseignés
     let inputs = this.getElementsByTagName("input");
      
@@ -84,14 +87,11 @@ document.getElementById("form").addEventListener("submit", function (e) {
             // Pour tout z allant de zoom min à zoom max :
             allCoordTiles.map(tile => {
                 let zoomStep = tile.zoomLevel.toString();
-                // let currentZoom = url.replace('{z}', `${tile.zoomLevel.toString()}`);
                 zoomStep = url.replace('{z}', zoomStep);
 
                 // Pour tout x allant de x min de z à x max de z
                 for(let j = tile.xMin; j <= tile.xMax; j++) {
-                    // url = url.replace('{x}', `${j + 1}`);
                     let xStep = zoomStep.replace('{x}', `${j}`);
-                    // console.log(xStep);
 
                     if (tile.xMin != tile.xMax) {
                         let xStep = zoomStep.replace('{x}', `${j}`);
@@ -102,7 +102,6 @@ document.getElementById("form").addEventListener("submit", function (e) {
                     // Pour tout y allant de y min de z à y max de z :
                     for(let k = tile.yMin; k <= tile.yMax; k++) {
                         let yStep = xStep.replace('{y}', `${k}`);
-                        // console.log(yStep);
 
                         if (tile.yMin != tile.Max) {
                             let yStep = zoomStep.replace('{x}', `${j}`);
