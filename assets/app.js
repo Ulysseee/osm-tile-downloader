@@ -27,15 +27,19 @@ document.getElementById("form").addEventListener("submit", function (e) {
     let err;
 
     // Récupère toutes les valeurs des champs du formulaire
-    let url = document.getElementById("url").value,
-        min_zoom = parseInt(document.getElementById("min_zoom").value),
+    let url = document.getElementById("url").value;
+    
+    if(document.getElementById("url").value.includes("http")) {
+        document.getElementById("url").value = url.replace('http', 'https');
+    }
+    
+    let min_zoom = parseInt(document.getElementById("min_zoom").value),
         max_zoom = parseInt(document.getElementById("max_zoom").value),
         x_min_max_zoom = parseInt(document.getElementById("x_min_max_zoom").value),
         y_min_max_zoom = parseInt(document.getElementById("y_min_max_zoom").value),
         x_max_max_zoom = parseInt(document.getElementById("x_max_max_zoom").value),
         y_max_max_zoom = parseInt(document.getElementById("y_max_max_zoom").value);
     
-    url = url.replace('http', 'https')
     console.log(url);
 
     // Vérifie si l'ensemble des champs ont été renseignés
