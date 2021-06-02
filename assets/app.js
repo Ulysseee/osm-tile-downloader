@@ -25,15 +25,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.getElementById("form").addEventListener("submit", function (e) {
     let err;
-
-    // Récupère toutes les valeurs des champs du formulaire
-    let url = document.getElementById("url").value;
     
     if(document.getElementById("url").value.includes("http")) {
-        document.getElementById("url").value = url.replace('http', 'https');
+        document.getElementById("url").value = document.getElementById("url").value.replace('http', 'https');
     }
-    
-    let min_zoom = parseInt(document.getElementById("min_zoom").value),
+
+    // Récupère toutes les valeurs des champs du formulaire
+    let url = document.getElementById("url").value,
+        min_zoom = parseInt(document.getElementById("min_zoom").value),
         max_zoom = parseInt(document.getElementById("max_zoom").value),
         x_min_max_zoom = parseInt(document.getElementById("x_min_max_zoom").value),
         y_min_max_zoom = parseInt(document.getElementById("y_min_max_zoom").value),
